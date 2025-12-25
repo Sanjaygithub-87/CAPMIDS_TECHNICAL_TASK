@@ -77,22 +77,89 @@
         .day-label.highlight-blue { color: var(--primary-blue); border-bottom: 2px solid var(--primary-blue); }
         
         .grid { display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(5, 1fr); flex: 1; min-height: 400px; }
-        .cell { border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 5px; font-size: 0.85rem; overflow-y: auto; }
+        .cell { 
+            border-right: 1px solid var(--border-color); 
+            border-bottom: 1px solid var(--border-color); 
+            padding: 5px; 
+            font-size: 0.85rem; 
+            overflow-y: auto; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+        }
+        .cell span { text-align: center; width: 100%; display: block; }
 
         .booked-appt {
             background-color: var(--calendar-green); color: #000; padding: 4px 6px;
             border-radius: 4px; font-size: 10px; margin-top: 5px;
             display: flex; flex-direction: column; gap: 4px; border: 1px solid #6bb86b;
+            width: 100%;
         }
         .appt-header-text { display: flex; align-items: center; gap: 4px; font-weight: 500; }
         .appt-action-icons { display: flex; justify-content: flex-end; gap: 8px; font-size: 11px; padding-top: 2px; }
         .appt-action-icons span { cursor: pointer; }
 
         .dashboard-filters { display: flex; gap: 10px; padding: 15px 20px; align-items: center; border-bottom: 1px solid #eee; flex-wrap: wrap; }
-        .filter-wrapper { position: relative; display: flex; align-items: center; }
-        .filter-icon { position: absolute; left: 10px; width: 14px; height: 14px; pointer-events: none; }
-        .filter-input { padding: 8px 8px 8px 30px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem; width: 180px; }
         
+        .filter-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-icon {
+            position: absolute;
+            left: 10px;
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+            z-index: 5; /* Ensure icon stays above input background */
+        }
+
+        .filter-input {
+            padding-left: 35px;
+            padding-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            height: 32px;
+            font-size: 0.85rem;
+            outline: none;
+            width: 180px;
+            text-align: center; /* Centers the text inside the input */
+        }
+
+        /* Clean UI logic for Select Date/Time labels */
+        input[type="date"], input[type="time"] {
+            position: relative;
+            color: transparent;
+        }
+        input[type="date"]::before { content: "Select Date"; position: absolute; color: #999; left: 35px; width: 100%; text-align: left; }
+        input[type="time"]::before { content: "Select Time"; position: absolute; color: #999; left: 35px; width: 100%; text-align: left; }
+
+        input[type="date"]:focus, input[type="date"]:valid,
+        input[type="time"]:focus, input[type="time"]:valid {
+            color: var(--text-main);
+        }
+        input[type="date"]:focus::before, input[type="date"]:valid::before,
+        input[type="time"]:focus::before, input[type="time"]:valid::before {
+            display: none;
+        }
+
+        /* Standardize Picker Indicator */
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
         .modal { background: #fff; width: 100%; max-width: 600px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto; }
         .modal-header { padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 10; }
@@ -100,9 +167,7 @@
         .field-container { display: flex; align-items: center; gap: 15px; position: relative; }
         .field-icon-wrapper { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .field-icon-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .modal-body input { width: 100%; padding: 8px 35px 8px 10px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-size: 0.9rem; }
-
-        .input-internal-icon { position: absolute; right: 10px; width: 16px; height: 16px; cursor: pointer; opacity: 0.6; }
+        .modal-body input { width: 100%; padding: 8px 10px 8px 35px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-size: 0.9rem; text-align: center; }
 
         .modal-footer { padding: 15px 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 12px; position: sticky; bottom: 0; background: white; }
         .btn-blue { background: var(--primary-blue); color: #fff; border: none; padding: 8px 25px; border-radius: 4px; cursor: pointer; font-weight: 500; white-space: nowrap; }
@@ -114,7 +179,7 @@
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th { text-align: left; padding: 12px 15px; background: #f8fafc; border-bottom: 1px solid #ddd; font-size: 0.8rem; }
         td { padding: 10px 15px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
-        .action-icon { width: 16px; height: 16px; cursor: pointer; object-fit: contain; }
+        .action-icon { width: 18px; height: 18px; cursor: pointer; object-fit: contain; }
         .icon-blue { filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(202deg) brightness(101%) contrast(92%); }
 
         .hidden { display: none !important; }
@@ -125,10 +190,8 @@
         @media (max-width: 768px) {
             .sidebar { position: fixed; left: -220px; height: 100%; }
             .sidebar.active-mobile { left: 0; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
-            .sidebar.collapsed { left: -70px; }
             .modal-body { grid-template-columns: 1fr; gap: 15px; }
             .calendar-nav { justify-content: center; }
-            .day-label { font-size: 0.6rem; padding: 5px; }
         }
     </style>
 </head>
@@ -206,15 +269,19 @@
                         <img src="./Asserts/search-interface-symbol.png" class="filter-icon">
                         <input type="text" id="search-d" class="filter-input" placeholder="Doctor Search">
                     </div>
+
                     <div class="filter-wrapper">
-                        <img src="./Asserts/calendar-silhouette.png" class="filter-icon">
+                        <img src="./Asserts/calendar.png" class="filter-icon">
                         <input type="date" id="d-start" class="filter-input">
                     </div>
+
                     <p style="margin:0; text-align:center;">-</p>
+
                     <div class="filter-wrapper">
-                        <img src="./Asserts/calendar-silhouette.png" class="filter-icon">
+                        <img src="./Asserts/calendar.png" class="filter-icon">
                         <input type="date" id="d-end" class="filter-input">
                     </div>
+
                     <button class="btn-blue" onclick="renderDashboard()">Update</button>
                 </div>
                 <div class="appt-details-container">
@@ -258,7 +325,7 @@
                         <input type="text" id="in-s" placeholder="Specialty">
                     </div>
                     <div class="field-container">
-                        <div class="field-icon-wrapper"><img src="./Asserts/calendar-silhouette.png" alt="Date"></div>
+                        <div class="field-icon-wrapper"><img src="./Asserts/calendar.png" alt="Date"></div>
                         <input type="date" id="in-date" required>
                     </div>
                     <div class="field-container">
@@ -266,7 +333,8 @@
                         <input type="time" id="in-time" required>
                     </div>
                     <div style="grid-column: span 2;">
-                        <textarea id="in-r" style="width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px;" rows="2" placeholder="Reason"></textarea>
+                        <label style="font-size: 0.8rem; color:#666; margin-left: 40px;">Reason</label>
+                        <textarea id="in-r" style="width: calc(100% - 40px); margin-left: 40px; border: 1px solid #ddd; border-radius: 4px; padding: 10px;" rows="2"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -306,6 +374,7 @@
             document.getElementById('page-' + tab).classList.add('active');
             document.getElementById('nav-' + tab).classList.add('active');
             document.getElementById('sidebar').classList.remove('active-mobile');
+            if(tab === 'dashboard') renderDashboard();
         }
 
         function updateDocLabel() {
@@ -323,11 +392,11 @@
             const header = document.getElementById('calendar-header');
             grid.innerHTML = ''; header.innerHTML = '';
             
-            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
             days.forEach(d => {
                 const dayLabel = document.createElement('div');
                 dayLabel.className = 'day-label';
-                if (d === 'FRI') dayLabel.classList.add('highlight-blue');
+                if (d === 'FRIDAY') dayLabel.classList.add('highlight-blue');
                 dayLabel.innerText = d;
                 header.appendChild(dayLabel);
             });
@@ -335,7 +404,6 @@
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             document.getElementById('month-display').innerText = `${monthNames[viewDate.getMonth()]} ${viewDate.getDate()}, ${viewDate.getFullYear()}`;
             
-            // Sync the dropdown selection with viewDate
             document.getElementById('month-select').value = viewDate.getMonth();
 
             const firstDay = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1).getDay();
@@ -390,14 +458,29 @@
                     <td>${a.date.split('-').reverse().join('/')}</td>
                     <td style="color:var(--primary-blue)">${a.timeRange}</td>
                     <td>
-                        <button onclick="editAppt(${realIdx})">✎</button>
-                        <button onclick="deleteAppt(${realIdx})">🗑</button>
+                        <img src="./Asserts/edit-text.png" class="action-icon icon-blue" onclick="editAppt(${realIdx})" style="margin-right:12px;">
+                        <img src="./Asserts/delete.png" class="action-icon" onclick="deleteAppt(${realIdx})">
                     </td>
                 </tr>`;
             });
         }
 
-        function deleteAppt(idx) { if(confirm('Delete?')) { appointments.splice(idx, 1); save(); } }
+        function editAppt(idx) {
+            const a = appointments[idx];
+            document.getElementById('modal-title').innerText = "Edit Appointment";
+            document.getElementById('edit-idx').value = idx;
+            document.getElementById('in-p').value = a.patient;
+            document.getElementById('in-d').value = a.doctor;
+            document.getElementById('in-h').value = a.hospital;
+            document.getElementById('in-s').value = a.specialty;
+            document.getElementById('in-date').value = a.date;
+            document.getElementById('in-time').value = a.rawTime;
+            document.getElementById('in-r').value = a.reason;
+            document.getElementById('modal-overlay').classList.remove('hidden');
+        }
+
+        function deleteAppt(idx) { if(confirm('Are you sure you want to delete this appointment?')) { appointments.splice(idx, 1); save(); } }
+        
         function save() {
             localStorage.setItem('cap_data', JSON.stringify(appointments));
             renderCalendar(); renderDashboard(); updateDocLabel();
