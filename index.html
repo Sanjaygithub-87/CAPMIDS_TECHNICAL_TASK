@@ -85,15 +85,16 @@
             overflow-y: auto; 
             display: flex;
             flex-direction: column;
-            align-items: center; 
+            align-items: stretch; 
         }
-        .cell span { text-align: center; width: 100%; display: block; }
+        .cell span.date-num { text-align: center; width: 100%; display: block; margin-bottom: 4px; }
 
         .booked-appt {
             background-color: var(--calendar-green); color: #000; padding: 4px 6px;
             border-radius: 4px; font-size: 10px; margin-top: 5px;
             display: flex; flex-direction: column; gap: 4px; border: 1px solid #6bb86b;
             width: 100%;
+            text-align: left;
         }
         .appt-header-text { display: flex; align-items: center; gap: 4px; font-weight: 500; }
         .appt-action-icons { display: flex; justify-content: flex-end; gap: 8px; font-size: 11px; padding-top: 2px; }
@@ -113,7 +114,7 @@
             width: 16px;
             height: 16px;
             pointer-events: none;
-            z-index: 5; /* Ensure icon stays above input background */
+            z-index: 5;
         }
 
         .filter-input {
@@ -125,10 +126,9 @@
             font-size: 0.85rem;
             outline: none;
             width: 180px;
-            text-align: center; /* Centers the text inside the input */
+            text-align: center;
         }
 
-        /* Clean UI logic for Select Date/Time labels */
         input[type="date"], input[type="time"] {
             position: relative;
             color: transparent;
@@ -145,7 +145,6 @@
             display: none;
         }
 
-        /* Standardize Picker Indicator */
         input[type="date"]::-webkit-calendar-picker-indicator,
         input[type="time"]::-webkit-calendar-picker-indicator {
             background: transparent;
@@ -167,7 +166,9 @@
         .field-container { display: flex; align-items: center; gap: 15px; position: relative; }
         .field-icon-wrapper { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .field-icon-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .modal-body input { width: 100%; padding: 8px 10px 8px 35px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-size: 0.9rem; text-align: center; }
+        
+        /* UPDATED: Modal inputs changed to left align */
+        .modal-body input { width: 100%; padding: 8px 10px 8px 35px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-size: 0.9rem; text-align: left; }
 
         .modal-footer { padding: 15px 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 12px; position: sticky; bottom: 0; background: white; }
         .btn-blue { background: var(--primary-blue); color: #fff; border: none; padding: 8px 25px; border-radius: 4px; cursor: pointer; font-weight: 500; white-space: nowrap; }
@@ -332,9 +333,9 @@
                         <div class="field-icon-wrapper"><img src="./Asserts/clock.png" alt="Time"></div>
                         <input type="time" id="in-time" required>
                     </div>
-                    <div style="grid-column: span 2;">
-                        <label style="font-size: 0.8rem; color:#666; margin-left: 40px;">Reason</label>
-                        <textarea id="in-r" style="width: calc(100% - 40px); margin-left: 40px; border: 1px solid #ddd; border-radius: 4px; padding: 10px;" rows="2"></textarea>
+                    <div style="grid-column: span 2; text-align: left;">
+                        <label style="font-size: 0.8rem; color:#666; margin-left: 40px; display: block;">Reason</label>
+                        <textarea id="in-r" style="width: calc(100% - 40px); margin-left: 40px; border: 1px solid #ddd; border-radius: 4px; padding: 10px; text-align: left;" rows="2"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -414,7 +415,7 @@
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 if(dayNum > 0 && dayNum <= daysInMonth) {
-                    cell.innerHTML = `<span>${dayNum}</span>`;
+                    cell.innerHTML = `<span class="date-num">${dayNum}</span>`;
                     const dateStr = `${viewDate.getFullYear()}-${String(viewDate.getMonth()+1).padStart(2,'0')}-${String(dayNum).padStart(2,'0')}`;
                     appointments.filter(a => a.date === dateStr).forEach(a => {
                         const apptDiv = document.createElement('div');
