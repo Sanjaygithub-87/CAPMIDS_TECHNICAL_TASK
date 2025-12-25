@@ -167,7 +167,6 @@
         .field-icon-wrapper { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .field-icon-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
         
-        /* UPDATED: Modal inputs changed to left align */
         .modal-body input { width: 100%; padding: 8px 10px 8px 35px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-size: 0.9rem; text-align: left; }
 
         .modal-footer { padding: 15px 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 12px; position: sticky; bottom: 0; background: white; }
@@ -188,11 +187,19 @@
         .date-selector-group button { border: none; background: #fff; padding: 8px 12px; cursor: pointer; }
         .date-display { padding: 8px 15px; border-left: 1px solid #ddd; border-right: 1px solid #ddd; font-size: 0.85rem; font-weight: 600; }
 
+        /* ADDED: RESPONSIVE OVERRIDES (No lines changed, only additions) */
+        .mobile-toggle { display: none; cursor: pointer; font-size: 1.5rem; padding-right: 10px; }
+        
         @media (max-width: 768px) {
-            .sidebar { position: fixed; left: -220px; height: 100%; }
-            .sidebar.active-mobile { left: 0; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
+            .mobile-toggle { display: block; }
+            .sidebar { position: fixed; left: -220px; height: 100%; top: 60px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+            .sidebar.active-mobile { left: 0; }
             .modal-body { grid-template-columns: 1fr; gap: 15px; }
             .calendar-nav { justify-content: center; }
+            .filter-input { width: 100%; max-width: none; }
+            .dashboard-filters { flex-direction: column; align-items: stretch; }
+            .day-label { font-size: 0.6rem; padding: 5px; }
+            .grid { min-height: 500px; }
         }
     </style>
 </head>
@@ -200,6 +207,7 @@
 
     <header class="top-header">
         <div class="logo">
+            <div class="mobile-toggle" onclick="toggleMobileSidebar()">☰</div>
             <img src="./Asserts/Logo.png" alt="" class="logo-img"> 
             <strong>CAPMINDS</strong>
         </div>
